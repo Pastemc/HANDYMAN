@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Sitio Web Bilingüe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .lang-btn:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .lang-btn:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #4a5568;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 60px;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            color: white;
+        }
+
+        .loading-screen.hidden {
+            display: none;
+        }
+
+        .spinner {
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .header-content {
+                justify-content: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Pantalla de carga inicial -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="spinner"></div>
+        <div class="loading-text">Preparando traducciones...</div>
+        <div class="loading-text" style="font-size: 0.9rem; margin-top: 10px;">Esto solo ocurre una vez</div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <span class="translate">🌐 Mi Sitio Web</span>
+            </div>
+            <div class="language-selector">
+                <button class="lang-btn active" onclick="changeLanguage('es')" id="btn-es">
+                    🇪🇸 Español
+                </button>
+                <button class="lang-btn" onclick="changeLanguage('en')" id="btn-en">
+                    🇺🇸 English
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <h1 class="translate">Bienvenido a Nuestro Sitio Web</h1>
+            <p class="translate">Descubre nuestra plataforma multilingüe con traducción automática y en tiempo real. Cambia el idioma en cualquier momento usando los botones superiores.</p>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3 class="translate">🚀 Rápido y Eficiente</h3>
+                <p class="translate">Nuestra plataforma está optimizada para ofrecerte la mejor experiencia. Carga rápida y navegación fluida en cualquier dispositivo.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="translate">🌍 Multilingüe</h3>
+                <p class="translate">Contenido disponible en múltiples idiomas. La traducción se realiza instantáneamente cuando seleccionas tu idioma preferido.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="translate">💯 100% Gratuito</h3>
+                <p class="translate">Sin costos ocultos ni límites de uso. Utilizamos tecnología de traducción automática para ofrecerte contenido en tu idioma sin cargo alguno.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="translate">🔒 Seguro y Confiable</h3>
+                <p class="translate">Tu privacidad es importante. Navegación segura con certificado SSL y protección de datos personales.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="translate">📱 Responsive</h3>
+                <p class="translate">Diseño adaptable a cualquier pantalla. Funciona perfectamente en móviles, tablets y computadoras de escritorio.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3 class="translate">⚡ Actualización Continua</h3>
+                <p class="translate">Constantemente mejoramos nuestra plataforma con nuevas características y optimizaciones basadas en tu feedback.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p class="translate">© 2024 Mi Sitio Web. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Variables globales
+        let currentLanguage = 'es';
+        const translations = {
+            es: {},
+            en: {}
+        };
+        let translationsReady = false;
+
+        // Función para traducir texto usando la API
+        async function translateText(text, targetLang) {
+            if (targetLang === 'es') return text;
+
+            try {
+                const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=es|${targetLang}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.responseStatus === 200) {
+                    return data.responseData.translatedText;
+                }
+                return text;
+            } catch (error) {
+                console.error('Error:', error);
+                return text;
+            }
+        }
+
+        // Precargar todas las traducciones al inicio
+        async function preloadTranslations() {
+            const elements = document.querySelectorAll('.translate');
+            const totalElements = elements.length;
+            let processed = 0;
+
+            // Guardar textos originales en español
+            for (let element of elements) {
+                const text = element.textContent.trim();
+                translations.es[text] = text;
+            }
+
+            // Traducir todos los textos al inglés
+            for (let element of elements) {
+                const spanishText = element.textContent.trim();
+                
+                // Verificar si ya está en localStorage
+                const cached = localStorage.getItem(`trans_${spanishText}`);
+                
+                if (cached) {
+                    translations.en[spanishText] = cached;
+                } else {
+                    // Traducir y guardar
+                    const englishText = await translateText(spanishText, 'en');
+                    translations.en[spanishText] = englishText;
+                    localStorage.setItem(`trans_${spanishText}`, englishText);
+                    
+                    // Pequeña pausa para no saturar la API
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+
+                processed++;
+                
+                // Actualizar progreso
+                const loadingText = document.querySelector('.loading-text');
+                if (loadingText) {
+                    loadingText.textContent = `Preparando traducciones... ${processed}/${totalElements}`;
+                }
+            }
+
+            translationsReady = true;
+            
+            // Ocultar pantalla de carga
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 500);
+        }
+
+        // Cambiar idioma INSTANTÁNEAMENTE
+        function changeLanguage(lang) {
+            if (!translationsReady) {
+                alert('Las traducciones aún se están cargando. Por favor espera un momento.');
+                return;
+            }
+
+            if (currentLanguage === lang) return;
+            
+            currentLanguage = lang;
+            
+            // Cambiar todos los textos INSTANTÁNEAMENTE
+            const elements = document.querySelectorAll('.translate');
+            elements.forEach(element => {
+                const spanishText = element.textContent.trim();
+                const translatedText = translations[lang][spanishText];
+                
+                if (translatedText) {
+                    element.textContent = translatedText;
+                }
+            });
+            
+            // Actualizar botones activos
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`btn-${lang}`).classList.add('active');
+            
+            // Guardar preferencia
+            localStorage.setItem('preferredLanguage', lang);
+        }
+
+        // Inicializar al cargar la página
+        window.addEventListener('load', async () => {
+            await preloadTranslations();
+            
+            // Cargar idioma guardado
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang && savedLang !== 'es') {
+                changeLanguage(savedLang);
+            }
+        });
+    </script>
+</body>
+</html>
